@@ -15,7 +15,7 @@ interface Cursor   { updated_at: string; id: number; }
 interface ApiResp  { products: Product[]; nextCursor: Cursor | null; }
 
 /* ── Config ── */
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+const API_URL = "/api";
 const CATS    = ["Electronics", "Books", "Sports", "Clothing", "Furniture", "Toys"];
 const LIMITS  = [5, 10, 15, 20, 30, 50, 100];
 
