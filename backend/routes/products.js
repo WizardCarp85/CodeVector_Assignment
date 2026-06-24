@@ -1,3 +1,4 @@
-const express = require('express')
-const router = express.Router()
+import express from 'express';
+import { Pool } from '../db'
 
+const router = express.Router()
