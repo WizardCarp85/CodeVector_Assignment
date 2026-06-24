@@ -11,6 +11,9 @@ app.use(express.json())
 
 app.use('/products',productsRouter)
 
+app.get('/health',(req,res)=>{
+    res.json({ status : "ok" })
+})
 
 app.listen(PORT,()=>{
     console.log(`Server is Running on PORT ${PORT}`)
