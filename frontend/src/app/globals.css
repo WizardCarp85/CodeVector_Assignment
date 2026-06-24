@@ -1,26 +1,133 @@
 @import "tailwindcss";
 
+/* ── Design tokens ───────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg:          #08090d;
+  --fg:          #e8eaf0;
+  --v900:        #4c1d95;
+  --v800:        #5b21b6;
+  --v700:        #6d28d9;
+  --v600:        #7c3aed;
+  --v500:        #8b5cf6;
+  --v400:        #a78bfa;
+  --v300:        #c4b5fd;
+  --v200:        #ddd6fe;
+  --v100:        #ede9fe;
+  --v50:         #f5f3ff;
+  --glow:        rgba(124, 58, 237, 0.35);
+  --border:      rgba(124, 58, 237, 0.15);
+  --surface:     rgba(124, 58, 237, 0.05);
+  --surface-md:  rgba(124, 58, 237, 0.10);
+  --surface-lg:  rgba(124, 58, 237, 0.18);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg);
+  --color-foreground:  var(--fg);
+  --font-sans:         var(--font-geist-sans);
+  --font-mono:         var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #0a0a12; }
+::-webkit-scrollbar-thumb { background: rgba(124,58,237,0.4); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--v600); }
+
+/* ── Keyframes ──────────────────────────────────────────── */
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%,100% { box-shadow: 0 0 20px var(--glow), 0 0 40px var(--glow); }
+  50%      { box-shadow: 0 0 40px var(--glow), 0 0 80px var(--glow); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.90) translateY(12px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);     }
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)     scale(1);    }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Animation classes ──────────────────────────────────── */
+.animate-float       { animation: float      4s    ease-in-out infinite; }
+.animate-pulse-glow  { animation: pulse-glow 2.5s  ease-in-out infinite; }
+.animate-modal-in    { animation: modalIn    0.26s cubic-bezier(0.22,1,0.36,1) forwards; }
+.animate-overlay-in  { animation: overlayIn  0.20s ease forwards; }
+.animate-spin        { animation: spin       0.8s  linear infinite; }
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+}
+
+/* ── Gradient text (violet only) ───────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--v300) 0%, var(--v400) 50%, var(--v600) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Violet border card ─────────────────────────────────── */
+.v-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  transition: background 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.v-card:hover {
+  background: var(--surface-md);
+  border-color: rgba(124,58,237,0.28);
+  box-shadow: 0 8px 32px rgba(124,58,237,0.18);
+  transform: translateY(-4px);
+}
+
+/* card entry animation */
+.card-in { animation: cardIn 0.4s ease both; }
+
+/* ── Noise overlay ──────────────────────────────────────── */
+.noise-overlay {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── Violet ambience ─────────────────────────────────────── */
+.v-orb {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  filter: blur(120px);
 }
