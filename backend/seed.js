@@ -1,0 +1,1 @@
+// This files contains the script to seed the database with 200,000 products
