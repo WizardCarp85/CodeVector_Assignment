@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import productRouter from './routes/products'
+import productsRouter from './routes/products.js'
 
 dotenv.config();
 
@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000
 
 app.use(express.json())
 
-app.use('/products',productRouter)
+app.use('/products',productsRouter)
 
 
 app.listen(PORT,()=>{
