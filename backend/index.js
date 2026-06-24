@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import productRouter from './routes/products'
 
 dotenv.config();
 
@@ -8,12 +9,8 @@ const PORT = process.env.PORT || 3000
 
 app.use(express.json())
 
-// app.use('/products',require("./routes/products"))
+app.use('/products',productRouter)
 
-// temporary
-app.get("/",(req,res)=>{
-    res.send("Server Started")
-})
 
 app.listen(PORT,()=>{
     console.log(`Server is Running on PORT ${PORT}`)
